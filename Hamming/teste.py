@@ -22,7 +22,22 @@ class TestHamming(unittest.TestCase):
 	def setUp(self):
 		self.hamming = Hamming()
 
-	@unittest.skip
+	def test_power_of_two_valids(self):
+		valids = [1,2,4,8,16,32,64]
+
+		for value in valids:
+			self.assertTrue(self.hamming.is_power(value,2))
+
+	def test_power_of_two_invalids(self):
+		# Verify possibility of values are negatives. But the function is_valid()
+		# Already to verify wheither frame is valid.
+
+		invalids = [6,10,14,20,24]
+
+		for value in invalids:
+			self.assertFalse(self.hamming.is_power(value,2))
+
+	@unittest.skip("Test of a dependence ( private method )")
 	def test_create_list_with_spaces_to_power_of_two(self):
 		frame1 = Frame("011")
 		frame2 = Frame("10101101011100110")
@@ -33,7 +48,8 @@ class TestHamming(unittest.TestCase):
 		self.assertEqual(return_frame_1,self.hamming.encode(frame1))
 		self.assertEqual(return_frame_2,self.hamming.encode(frame2))
 
-	@unittest.skip
+
+	@unittest.skip("skipped")
 	def test_frame_encoded_should_be_correct(self):
 		frame = Frame("0111")
 
@@ -41,7 +57,7 @@ class TestHamming(unittest.TestCase):
 
 		self.assertEqual(Frame("0001111"),encoded)
 
-	@unittest.skip
+	@unittest.skip("skipped")
 	def test_frame_check_should_be_correct(self):
 
 		frame = Frame("0001111")
@@ -52,4 +68,4 @@ class TestHamming(unittest.TestCase):
 
 
 if __name__ == "__main__":
-	unittest.main()
+	unittest.main(verbosity=2)
