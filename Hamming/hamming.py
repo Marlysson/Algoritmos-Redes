@@ -12,6 +12,13 @@
 	- encode()     # Put inside of frame the verification bit, in the positions of power of two.
 	- decode()     # Verify whether the frame sent has bits wrong
 
+	To use a dictionary to mark the positions of frame, as such as:
+
+	>> frame = {'1':0,'2':1,'3':1,'4':1,'5':0,'6':1}
+	>> position_two = frame.get(2,None)
+	>> print(position_two)
+	1
+
 '''
 
 class Frame:
@@ -47,41 +54,70 @@ class Hamming:
 	def __init__(self):
 		self.parity = "par"
 
+	def is_power(self,value,power):
+
+		results = []
+		divisor = power
+
+		while True:
+
+			if value % divisor == 0:
+				results.append(divisor)
+				value /= divisor
+			else:
+				divisor += 1
+
+			if value == 1:
+				break
+
+		if results.count(power) < len(results):
+			return False
+		return True
+
+	def parities(self,position):
+		pass
+
+	def calculate_bit_parity(self,set_data):
+		pass
+
 	def encode(self,frame):
 
 		original_list = list(frame.value)
 		list_with_power_two = []
 
-		index_original_list = 0
 		position_new_list = 0
 
-		while index_original_list < len(original_list):
+		if not frame.is_valid():
 
-			actual_position = len(list_with_power_two) + 1
+			return False
 
-			if actual_position == pow(2,position_new_list):
+		else:
 
-				list_with_power_two.append("")
+			while original_list:
 
-				position_new_list += 1
+				actual_position = len(list_with_power_two) + 1
 
-			else:
-				element_original_list = int(original_list[index_original_list])
+				# Then it's position power of two
+				if self.is_power(actual_position,2): 
 
-				list_with_power_two.append(element_original_list)
+					list_with_power_two.append("")
 
-				index_original_list += 1
+					position_new_list += 1
 
-		for position,element in enumerate(list_with_power_two,start=1):
-			
-			if element == "":
+				else:
+
+					element_original_list = int(original_list.pop(0))
+
+					list_with_power_two.append(element_original_list)
+
+		return list_with_power_two
 				
-
 	def check(self,frame):
 		return frame
 
+# Paridade : par
 # 0 1 1
-#  _ _ 0 _ 1 1
+#  (1) (0) 0 (0) 1 1
 
 h = Hamming()
-print(h.encode(Frame("011")))
+print(h.encode(Frame('011')))
