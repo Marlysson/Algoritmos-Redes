@@ -2,22 +2,29 @@
 
 '''
 
-	API of Frame
+	API OF FRAME
 
-	- is_valid()   # Verify whether bits of frame has values values not accepted.
+	- is_valid() Boolean
+		# Verify whether bits of frame has values values not accepted.
 
-	API of methods hamming algorithms
+	API OF METHODS HAMMING ALGORITHM
 
-	- check()      # Calculate parity of bits and verify whether frame came 
-	- encode()     # Put inside of frame the verification bit, in the positions of power of two.
-	- decode()     # Verify whether the frame sent has bits wrong
+	- check() Boolean
+		# Calculate parity of bits and verify whether frame came ( add internaly to frame)
 
-	To use a dictionary to mark the positions of frame, as such as:
+	- encode() Object ( Frame )
+		# Put inside of frame the verification bit, in the positions of power of two. (  add internaly to frame )
 
-	>> frame = {'1':0,'2':1,'3':1,'4':1,'5':0,'6':1}
-	>> position_two = frame.get(2,None)
-	>> print(position_two)
-	1
+	- decode() Object ( Frame )
+	    # Verify whether the frame sent has bits wrong  ( add internaly to frame )
+
+	- change_bit(position) Void
+		# Swap bit
+
+	API UTILS
+
+	- calculate_parity(dataset) Integer
+	- is_power(num,power) Boolean
 
 '''
 
@@ -27,6 +34,7 @@ class Frame:
 		self.value = value
 
 	def is_valid(self):
+		#To implement REGEX = r'[01]
 
 		count_wrong = 0
 
@@ -47,38 +55,79 @@ class Frame:
 
 
 	def __repr__(self):
-		return "<Frame {}>".format(self.value)
+		return "<Frame [{}]>".format(self.value)
 
 
 class Hamming:
-	def __init__(self):
-		self.parity = "par"
+	def __init__(self,parity):
+		if parity not in ["par","impar"]:
+			raise ValueError("Incorrect Value")
+
+		self.parity = parity
 
 	def is_power(self,value,power):
 
 		results = []
 		divisor = power
 
-		while True:
+		if value == 0:
+			raise ValueError("Invalid Value")
+		else:
+			while True:
+				if value % divisor == 0:
+					results.append(divisor)
+					value //= divisor
+				else:
+					divisor += 1
 
-			if value % divisor == 0:
-				results.append(divisor)
-				value /= divisor
-			else:
-				divisor += 1
-
-			if value == 1:
-				break
+				if value == 1:
+					break
 
 		if results.count(power) < len(results):
 			return False
 		return True
 
-	def parities(self,position):
-		pass
 
-	def calculate_bit_parity(self,set_data):
-		pass
+	def divisors(self,position):
+
+		'''
+			Return divisors which are power of two
+		'''
+
+		from math import sqrt , floor
+
+		powers = []
+		total = position
+
+		while total > 1:
+			max_power = pow(2,int(floor(sqrt(total)))) # Obtain closest power
+
+			total -= max_power
+			powers.append(max_power)
+
+			if total == 1:
+				powers.append(total)
+
+		return powers
+
+	def calculate_parity(self,dataset):
+		count_one = dataset.count(1)
+
+		is_pair = lambda value : value % 2 == 0
+
+		if self.parity == "par":
+			if is_pair(count_one):
+				value = 0
+			else:
+				value = 1
+
+		elif self.parity == "impar":
+			if is_pair(count_one):
+				value = 1
+			else:
+				value = 0
+
+		return value
 
 	def encode(self,frame):
 
@@ -97,7 +146,6 @@ class Hamming:
 
 				actual_position = len(list_with_power_two) + 1
 
-				# Then it's position power of two
 				if self.is_power(actual_position,2): 
 
 					list_with_power_two.append("")
@@ -110,14 +158,51 @@ class Hamming:
 
 					list_with_power_two.append(element_original_list)
 
-		return list_with_power_two
-				
+		data_bits = {}
+
+		#Generating dict with position and yours divisors
+		for position,value_position in enumerate(list_with_power_two,start=1):
+			if not self.is_power(position,2):
+				data_bits[position] = self.divisors(position)
+
+		for position,actual_element in enumerate(list_with_power_two,start=1):
+
+			# Found parity position
+			if self.is_power(position,2):
+
+				position_bit_verified = []
+				dataset_bit = []
+
+				for position_list , divisors in data_bits.items():
+					if position in divisors:
+						position_bit_verified.append(position_list)
+
+				for value in position_bit_verified:
+					dataset_bit.append(list_with_power_two[value-1])
+
+				parity = self.calculate_parity(dataset_bit)
+
+				list_with_power_two[position-1] = parity
+
+		formated = "".join(map(str,list_with_power_two))
+
+		return Frame(formated)
+			
 	def check(self,frame):
 		return frame
 
-# Paridade : par
+# Paridade : par impar
 # 0 1 1
-#  (1) (0) 0 (0) 1 1
+# _ _ 0 _ 1 1
+#  (1) (1) 0 (0) 1 1
+# Frame('110011')
 
-h = Hamming()
-print(h.encode(Frame('011')))
+l = range(1,20)
+h = Hamming("par")
+
+print(h.encode(Frame("11100101010110")))
+
+# for i in l:
+# 	if not h.is_power(i,2):
+# 		d = h.divisors(i)
+# 		print("number:{} = {}".format(i," + ".join(map(str,d))))
