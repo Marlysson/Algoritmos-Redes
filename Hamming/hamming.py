@@ -30,6 +30,9 @@
 
 class Frame:
 
+	'''
+	Represents in a form a object the representation of a Frame on network
+	'''
 	def __init__(self,value):
 		self.value = value
 
@@ -70,7 +73,7 @@ class Hamming:
 		results = []
 		divisor = power
 
-		if value == 0:
+		if value <= 0:
 			raise ValueError("Invalid Value")
 		else:
 			while True:
@@ -99,8 +102,10 @@ class Hamming:
 		powers = []
 		total = position
 
+		find_floor_root = lambda x : floor(sqrt(x))
+
 		while total > 1:
-			max_power = pow(2,int(floor(sqrt(total)))) # Obtain closest power
+			max_power = pow(2,int(find_floor_root(total))) # Obtain closest power
 
 			total -= max_power
 			powers.append(max_power)
