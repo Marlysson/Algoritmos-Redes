@@ -14,6 +14,10 @@
 
 	- check() Boolean
 		# Calculate parity of bits and verify whether frame it's correct ( add internaly to frame)
+		
+		>> import hamming
+		>> hamming.check(Frame("110011"))
+		True
 
 	- change_bit(position) Void
 		# Swap bit value
@@ -39,6 +43,15 @@
 		>> divisors(3) -> [2,1]
 		>> divisors(5) -> [4,1]
 
+	- bits_verified_by(sequence, power_two) List
+		# Return the value of sequence that power_two verify.
+
+		>> bits_verified([1, 1, 0, 0, 1, 1],2)
+		>> [0, 1]
+
+	- check(Frame) Boolean
+		# Return True or False verifying whether Frame it's encoded correctaly
+
 
 
 '''
@@ -61,7 +74,6 @@ class Frame:
 			return False
 		return True
 
-
 	def __eq__(self,other_frame):
 		
 		if self.value == other_frame.value:
@@ -70,6 +82,7 @@ class Frame:
 
 	def __repr__(self):
 		return "<Frame [{}]>".format(self.value)
+
 
 
 class Hamming:
@@ -145,6 +158,23 @@ class Hamming:
 
 		return value
 
+	def bits_verified_by(self,sequence,power_two):
+		
+		dataset_bit = []
+
+		for position,value in enumerate(sequence):
+			position_readable = position + 1
+
+			if not self.is_power(position_readable,2):
+				divisors_position = self.divisors(position_readable)
+				
+				if power_two in divisors_position:
+					real_position = position_readable - 1
+
+					dataset_bit.append(sequence[real_position])
+
+		return dataset_bit
+
 	def encode(self,frame):
 
 		original_list = list(frame.value)
@@ -174,35 +204,44 @@ class Hamming:
 
 					list_with_power_two.append(element_original_list)
 
-		data_bits = {}
+		for position , actual_element in enumerate(list_with_power_two):
 
-		#Generating dict with position and yours divisors
-		for position,value_position in enumerate(list_with_power_two,start=1):
-			if not self.is_power(position,2):
-				data_bits[position] = self.divisors(position)
-
-		for position,actual_element in enumerate(list_with_power_two,start=1):
+			position_readable = position + 1
 
 			# Found parity position
-			if self.is_power(position,2):
+			if self.is_power(position_readable,2):
 
-				position_bit_verified = []
-				dataset_bit = []
+				sequence_verified = self.bits_verified_by(list_with_power_two,position_readable)
 
-				for position_list , divisors in data_bits.items():
-					if position in divisors:
-						position_bit_verified.append(position_list)
+				parity = self.calculate_parity(sequence_verified)
 
-				for value in position_bit_verified:
-					dataset_bit.append(list_with_power_two[value-1])
-
-				parity = self.calculate_parity(dataset_bit)
-
-				list_with_power_two[position-1] = parity
+				# Minus one because the list original index begin in 0 , and position_readable
+				# begin of 1(one) , human readable
+				list_with_power_two[position_readable-1] = parity
 
 		formated = "".join(map(str,list_with_power_two))
 
 		return Frame(formated)
 			
 	def check(self,frame):
-		return frame
+		
+		original_frame = list(map(int,frame.value))
+
+		bits_wrong = 0
+
+		for index, value_position in enumerate(original_frame):
+
+			position_readable = index + 1
+
+			if self.is_power(position_readable,2):
+
+				sequence_verified = self.bits_verified_by(original_frame,position_readable)
+				
+				parity = self.calculate_parity(sequence_verified)
+
+				if parity != original_frame[position_readable-1]:
+					bits_wrong += 1
+
+		if bits_wrong > 0:
+			return False
+		return True
