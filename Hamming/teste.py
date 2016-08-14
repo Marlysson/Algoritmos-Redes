@@ -17,25 +17,40 @@ class TestFrame(unittest.TestCase):
 	def test_frame_should_return_equals_object_comparison_by_value(self):
 		self.assertEqual(Frame("0101"),Frame("0101"))
 
+	def test_frame_should_return_different_frames(self):
+		self.assertNotEqual(Frame("010101"),Frame("0101"))
+
+
 class TestHamming(unittest.TestCase):
 
 	def setUp(self):
 		self.hamming = Hamming("par")
+	
+	def test_power_positive_numbers(self):
+		data_tests = []
 
-	def test_power_of_two_valids(self):
-		valids = [1,2,4,8,16,32,64]
+		power_two =   { 2 : [ 2, 4, 8, 16, 32, 64] }
+		power_three = { 3 : [ 3, 9, 27, 81] }
+		power_four =  { 4 : [ 4, 16, 64] }
+		power_ten =   { 10: [10, 100, 1000] }
 
-		for value in valids:
-			self.assertTrue(self.hamming.is_power(value,2))
+		data_tests.extend([power_two,power_three,power_four,power_ten])
 
-	def test_power_of_two_invalids(self):
-		# Verify possibility of values are negatives. But the function is_valid()
-		# Already to verify wheither frame is valid.
+		for test in data_tests:
+			for power_key, powers_values in test.items():
+				for power in powers_values:
+					self.assertTrue(self.hamming.is_power(power,power_key))
 
-		invalids = [6,10,14,20,24]
+	def test_power_invalids(self):
+		invalids_numbers = [ 0, -2, -4, -16 ]
+		differents_powers = [10, 12, 20]
 
-		for value in invalids:
-			self.assertFalse(self.hamming.is_power(value,2))
+		with self.assertRaises(ValueError):
+			for number in invalids_numbers:
+				self.hamming.is_power(number,2)
+
+		for value in differents_powers:
+			self.assertFalse(self.hamming.is_power(value,3))
 
 	def test_frame_encoded_should_be_correct(self):
 		frame1 = Frame("011")
@@ -51,17 +66,15 @@ class TestHamming(unittest.TestCase):
 		self.assertNotEqual(Frame("1100110"),frame3_encoded)
 
 	def test_calculate_parity_of_dataset_bits(self):
-		#Global parity : par
-
-		dataset = [0,1,1,0]
+		dataset = [0,1,1,0] #Global parity : par
 
 		parity = self.hamming.calculate_parity(dataset)
 
 		self.assertEqual(parity,0)
 
-	def test_calculate_parity_of_dataset_changing_parity_of_hamming(self):
+	def test_calculate_parity_of_dataset_changing_parity(self):
 
-		dataset = [0,1,1,1]
+		dataset = [0,1,1,1] #With global parity : par
 
 		parity_par = self.hamming.calculate_parity(dataset)
 
@@ -72,7 +85,7 @@ class TestHamming(unittest.TestCase):
 		self.assertEqual(1,parity_par)
 		self.assertEqual(0,parity_impar)
 
-	@unittest.skip("skipped")
+	@unittest.skip("not implemented")
 	def test_frame_check_should_be_correct(self):
 
 		frame = Frame("0001111")
@@ -80,7 +93,6 @@ class TestHamming(unittest.TestCase):
 		check = self.hamming.check(frame)
 
 		self.assertTrue(check)
-
 
 if __name__ == "__main__":
 	unittest.main(verbosity=2)

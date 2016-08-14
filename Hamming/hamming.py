@@ -191,19 +191,3 @@ class Hamming:
 			
 	def check(self,frame):
 		return frame
-
-# Paridade : par impar
-# 0 1 1
-# _ _ 0 _ 1 1
-#  (1) (1) 0 (0) 1 1
-# Frame('110011')
-
-l = range(1,20)
-h = Hamming("par")
-
-print(h.encode(Frame("11100101010110")))
-print(h.is_power(10,3))
-# for i in l:
-# 	if not h.is_power(i,2):
-# 		d = h.divisors(i)
-# 		print("number:{} = {}".format(i," + ".join(map(str,d))))
