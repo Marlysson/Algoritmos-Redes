@@ -52,18 +52,6 @@ class TestHamming(unittest.TestCase):
 		for value in differents_powers:
 			self.assertFalse(self.hamming.is_power(value,3))
 
-	def test_frame_encoded_should_be_correct(self):
-		frame1 = Frame("011")
-		frame2 = Frame("11100101010110")
-		frame3 = Frame("0100")
-
-		frame1_encoded = self.hamming.encode(frame1)
-		frame2_encoded = self.hamming.encode(frame2)
-		frame3_encoded = self.hamming.encode(frame3)
-
-		self.assertEqual(Frame("110011"),frame1_encoded)
-		self.assertEqual(Frame("1110110101010100110"),frame2_encoded)
-		self.assertNotEqual(Frame("1100110"),frame3_encoded)
 
 	def test_calculate_parity_of_dataset_bits(self):
 		dataset = [0,1,1,0] #Global parity : par
@@ -85,14 +73,32 @@ class TestHamming(unittest.TestCase):
 		self.assertEqual(1,parity_par)
 		self.assertEqual(0,parity_impar)
 
-	@unittest.skip("not implemented")
+	def test_frame_encoded_should_be_correct(self):
+		frame1 = Frame("011")
+		frame2 = Frame("11100101010110")
+		frame3 = Frame("0100")
+
+		frame1_encoded = self.hamming.encode(frame1)
+		frame2_encoded = self.hamming.encode(frame2)
+		frame3_encoded = self.hamming.encode(frame3)
+
+		self.assertEqual(Frame("110011"),frame1_encoded)
+		self.assertEqual(Frame("1110110101010100110"),frame2_encoded)
+		self.assertNotEqual(Frame("1100110"),frame3_encoded)
+
 	def test_frame_check_should_be_correct(self):
 
-		frame = Frame("0001111")
+		frame1 = Frame("110011")
+		frame2 = Frame("11100101010110")
 
-		check = self.hamming.check(frame)
+		frame1_encoded = self.hamming.encode(frame1)
+		frame2_encoded = self.hamming.encode(frame2)
 
-		self.assertTrue(check)
+		check_frame_1 = self.hamming.check(frame1_encoded)
+		check_frame_2 = self.hamming.check(frame2_encoded)
+
+		self.assertTrue(check_frame_1)
+		self.assertTrue(check_frame_2)
 
 if __name__ == "__main__":
 	unittest.main(verbosity=2)
