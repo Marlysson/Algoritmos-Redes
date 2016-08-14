@@ -24,7 +24,7 @@ class Frame:
     def change_bit(self,position):
 
         if position <= 0 or position > len(self.value):
-            raise ValueError("Position invalid, insert a valid position")
+            raise ValueError("Invalid position, insert a valid position")
         else:
             frame_converted = list(map(int,self.value))
             position_readable = position - 1 
@@ -51,7 +51,7 @@ class Frame:
 class Hamming:
     def __init__(self,parity):
         if parity not in ["pair","odd"]:
-            raise ValueError("Incorrect Value")
+            raise ValueError("Invalid Value")
 
         self.parity = parity
 
