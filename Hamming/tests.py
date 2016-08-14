@@ -7,7 +7,7 @@ class TestFrame(unittest.TestCase):
 
 	def setUp(self):
 		self.frame1 = Frame("01011")
-		self.frame2 = Frame("01012")
+		self.frame2 = Frame("1234")
 
 	def test_frame_value_should_be_valid(self):
 
@@ -20,21 +20,38 @@ class TestFrame(unittest.TestCase):
 	def test_frame_should_return_different_frames(self):
 		self.assertNotEqual(Frame("010101"),Frame("0101"))
 
+	def test_change_bit_value_correct(self):
+		frame1 = Frame("0101") 
+		frame2 = Frame("01")
 
-class TestHamming(unittest.TestCase):
+		new_frame1 = frame1.change_bit(1)
+		new_frame2 = frame2.change_bit(2)
+
+		self.assertEqual(new_frame1,Frame("1101"))
+		self.assertEqual(new_frame2,Frame("00"))
+
+	def test_change_wrong_position_should_raise_exception(self):
+
+		frame = Frame("0101")
+
+		self.assertRaises(ValueError,frame.change_bit,5)
+		self.assertRaises(ValueError,frame.change_bit,-2)
+
+
+class TestHammingAlgorithm(unittest.TestCase):
 
 	def setUp(self):
-		self.hamming = Hamming("par")
+		self.hamming = Hamming("pair")
 	
 	def test_power_positive_numbers(self):
 		data_tests = []
 
-		power_two =   { 2 : [ 2, 4, 8, 16, 32, 64] }
-		power_three = { 3 : [ 3, 9, 27, 81] }
-		power_four =  { 4 : [ 4, 16, 64] }
-		power_ten =   { 10: [10, 100, 1000] }
+		power_of_two =   { 2 : [ 2, 4, 8, 16, 32, 64] }
+		power_of_three = { 3 : [ 3, 9, 27, 81] }
+		power_of_four =  { 4 : [ 4, 16, 64] }
+		power_of_ten =   { 10: [10, 100, 1000] }
 
-		data_tests.extend([power_two,power_three,power_four,power_ten])
+		data_tests.extend([power_of_two,power_of_three,power_of_four,power_of_ten])
 
 		for test in data_tests:
 			for power_key, powers_values in test.items():
@@ -62,13 +79,14 @@ class TestHamming(unittest.TestCase):
 
 	def test_calculate_parity_of_dataset_changing_parity(self):
 
+		hamming = Hamming("pair")
+
 		dataset = [0,1,1,1] #With global parity : par
+		parity_par = hamming.calculate_parity(dataset)
 
-		parity_par = self.hamming.calculate_parity(dataset)
+		hamming.parity = "odd"
 
-		self.hamming.parity = "impar"
-
-		parity_impar = self.hamming.calculate_parity(dataset)
+		parity_impar = hamming.calculate_parity(dataset)
 
 		self.assertEqual(1,parity_par)
 		self.assertEqual(0,parity_impar)
@@ -99,6 +117,21 @@ class TestHamming(unittest.TestCase):
 
 		self.assertTrue(check_frame_1)
 		self.assertTrue(check_frame_2)
+
+	@unittest.skip("pass")
+	def test_frame_check_should_be_incorrect(self):
+
+		frame1 = Frame("110011")
+		frame2 = Frame("11100101010110")
+
+		frame1_encoded = self.hamming.encode(frame1).change_bit(2)
+		frame2_encoded = self.hamming.encode(frame2).change_bit(4)
+
+		check_frame_1 = self.hamming.check(frame1_encoded)
+		check_frame_2 = self.hamming.check(frame2_encoded)
+
+		self.assertFalse(check_frame_1)
+		self.assertFalse(check_frame_2)
 
 if __name__ == "__main__":
 	unittest.main(verbosity=2)
