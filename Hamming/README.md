@@ -13,7 +13,9 @@ frame = Frame(bit_values)
 > Check whether bits of frame has values not accepted.
 
 **Signature:** ```frame.is_valid()```
+
 **Return:** ```boolean```
+
 **Usage:**
 
 ```python
@@ -28,15 +30,17 @@ False
 > Change value of a bit position of a frame
 
 **Signature:** ```frame.change_bit(position)```
+
 **Return:** ```Frame()``` ( _A new frame object with position value changed_ )
+
 **Usage:**
 
 ```python
->>> f = Frame("0101")
+>>> f = Frame("0111")
 >>> print(f)
-<Frame [0101]>
+<Frame [0111]>
 >>> f.change_bit(1)
-<Frame [1101]>
+<Frame [1111]>
 ```
 
 ## API METHODS OF HAMMING ALGORITHM
@@ -52,7 +56,9 @@ hamming = Hamming("parity") # pair or odd
 > Put inside of frame the verification bit, calculating the parity value to each position.
 
 **Signature:** ```hamming.encode(frame)```
+
 **Return:** ```Frame()``` ( _A new frame object with position value changed_ )
+
 **Usage:**
 
 ```python
@@ -68,7 +74,9 @@ hamming = Hamming("parity") # pair or odd
 > Verify whether frame it's correct.
 
 **Signature:** ```hamming.check(frame)```
+
 **Return:** ```boolean```
+
 **Usage:**
 
 ```python
@@ -86,7 +94,9 @@ True
 > Return whether a number it's power of other.
 
 **Signature:** ```hamming.is_power(number,power)```
+
 **Return:** ```boolean```
+
 **Usage:**
 
 ```python
@@ -102,7 +112,9 @@ False
 > Return a parity of a dataset , returning a value that means it's a patiry of all values of dataset.
 
 **Signature:** ```hamming.calculate_parity(dataset)```
+
 **Return:** ```integer```
+
 **Usage:**
 
 ```python
@@ -115,8 +127,9 @@ False
 
 ### DIVISORS(value)
 
->Return all divisors of parameter that are power of two. 
->**Note:** The parameter isn't a power of two.
+> Return all divisors of parameter that are power of two.
+
+> **Note:** The parameter isn't a power of two.
 
 ```python
 >>> hamming = Hamming("odd")
@@ -138,5 +151,5 @@ False
 [0, 1]
 ```
 
-### That's all folks. :smile: :+1:
-####Any sugestions, issues and pull request will be well accepted.
+## That's all folks. :smile: :+1:
+Any sugestions, issues and pull request will be well accepted.
