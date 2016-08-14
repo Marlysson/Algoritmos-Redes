@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
-__author__ = "Marlysson Silva"
-__contact__ = {"email":"marlysson5@gmail.com","social_network": "facebook.com/marlysson7"}
+# Author : "Marlysson Silva"
+# Contacts:  {"email":"marlysson5@gmail.com","social_network": "facebook.com/marlysson7"}
 
 class Frame:
 
@@ -29,13 +29,14 @@ class Frame:
             frame_converted = list(map(int,self.value))
             position_readable = position - 1 
 
-            frame_converted[position_readable] = frame_converted[~position_readable]
+            frame_converted[position_readable] = 1 ^ frame_converted[position_readable]
 
-            formated = map(str,frame_converted)
+            formated = "".join(map(str,frame_converted))
 
-            self.value = "".join(formated)
+		#To return a immutable object, each modification
+        # at object create a new.
 
-        return Frame(self.value)
+        return Frame(formated) 
 
     def __eq__(self,other_frame):
 
@@ -78,8 +79,8 @@ class Hamming:
         return True
 
 
-	def divisors(self,position):
-		from math import sqrt , floor
+    def divisors(self,position):
+        from math import sqrt , floor
 
         powers = []
         total = position
@@ -117,7 +118,7 @@ class Hamming:
         return value
 
     def bits_verified_by(self,sequence,power_two):
-		
+
         dataset_bit = []
 
         for position,value in enumerate(sequence):
@@ -125,7 +126,7 @@ class Hamming:
 
             if not self.is_power(position_readable,2):
                 divisors_position = self.divisors(position_readable)
-				
+
                 if power_two in divisors_position:
                     real_position = position_readable - 1
 

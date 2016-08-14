@@ -94,7 +94,7 @@ class TestHammingAlgorithm(unittest.TestCase):
 	def test_frame_encoded_should_be_correct(self):
 		frame1 = Frame("011")
 		frame2 = Frame("11100101010110")
-		frame3 = Frame("0100")
+		frame3 = Frame("111")
 
 		frame1_encoded = self.hamming.encode(frame1)
 		frame2_encoded = self.hamming.encode(frame2)
@@ -102,30 +102,26 @@ class TestHammingAlgorithm(unittest.TestCase):
 
 		self.assertEqual(Frame("110011"),frame1_encoded)
 		self.assertEqual(Frame("1110110101010100110"),frame2_encoded)
-		self.assertNotEqual(Frame("1100110"),frame3_encoded)
+		self.assertNotEqual(Frame("00101"),frame3_encoded)
 
 	def test_frame_check_should_be_correct(self):
 
 		frame1 = Frame("110011")
-		frame2 = Frame("11100101010110")
+		frame2 = Frame("1110110101010100110")
 
-		frame1_encoded = self.hamming.encode(frame1)
-		frame2_encoded = self.hamming.encode(frame2)
-
-		check_frame_1 = self.hamming.check(frame1_encoded)
-		check_frame_2 = self.hamming.check(frame2_encoded)
+		check_frame_1 = self.hamming.check(frame1)
+		check_frame_2 = self.hamming.check(frame2)
 
 		self.assertTrue(check_frame_1)
 		self.assertTrue(check_frame_2)
 
-	@unittest.skip("pass")
 	def test_frame_check_should_be_incorrect(self):
 
-		frame1 = Frame("110011")
+		frame1 = Frame("011")
 		frame2 = Frame("11100101010110")
 
-		frame1_encoded = self.hamming.encode(frame1).change_bit(2)
-		frame2_encoded = self.hamming.encode(frame2).change_bit(4)
+		frame1_encoded = self.hamming.encode(frame1).change_bit(1)
+		frame2_encoded = self.hamming.encode(frame2).change_bit(5)
 
 		check_frame_1 = self.hamming.check(frame1_encoded)
 		check_frame_2 = self.hamming.check(frame2_encoded)
