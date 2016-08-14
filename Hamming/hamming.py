@@ -9,14 +9,14 @@
 
 	API OF METHODS HAMMING ALGORITHM
 
-	- check() Boolean
-		# Calculate parity of bits and verify whether frame came ( add internaly to frame)
-
 	- encode() Object ( Frame )
 		# Put inside of frame the verification bit, in the positions of power of two. (  add internaly to frame )
 
 	- decode() Object ( Frame )
 	    # Verify whether the frame sent has bits wrong  ( add internaly to frame )
+
+	- check() Boolean
+		# Calculate parity of bits and verify whether frame came ( add internaly to frame)
 
 	- change_bit(position) Void
 		# Swap bit
@@ -30,9 +30,6 @@
 
 class Frame:
 
-	'''
-	Represents in a form a object the representation of a Frame on network
-	'''
 	def __init__(self,value):
 		self.value = value
 
@@ -56,7 +53,6 @@ class Frame:
 			return True
 		return False
 
-
 	def __repr__(self):
 		return "<Frame [{}]>".format(self.value)
 
@@ -77,16 +73,16 @@ class Hamming:
 			raise ValueError("Invalid Value")
 		else:
 			while True:
-				if value % divisor == 0:
-					results.append(divisor)
-					value //= divisor
+				if value >= divisor:
+					if value % divisor == 0:
+						results.append(divisor)
+						value //= divisor
+					else:
+						divisor += 1
 				else:
-					divisor += 1
-
-				if value == 1:
 					break
 
-		if results.count(power) < len(results):
+		if results.count(power) != len(results):
 			return False
 		return True
 
@@ -206,7 +202,7 @@ l = range(1,20)
 h = Hamming("par")
 
 print(h.encode(Frame("11100101010110")))
-
+print(h.is_power(10,3))
 # for i in l:
 # 	if not h.is_power(i,2):
 # 		d = h.divisors(i)
