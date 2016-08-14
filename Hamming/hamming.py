@@ -10,21 +10,36 @@
 	API OF METHODS HAMMING ALGORITHM
 
 	- encode() Object ( Frame )
-		# Put inside of frame the verification bit, in the positions of power of two. (  add internaly to frame )
-
-	- decode() Object ( Frame )
-	    # Verify whether the frame sent has bits wrong  ( add internaly to frame )
+		# Put inside of frame the verification bit, in the positions of power of two.
 
 	- check() Boolean
-		# Calculate parity of bits and verify whether frame came ( add internaly to frame)
+		# Calculate parity of bits and verify whether frame it's correct ( add internaly to frame)
 
 	- change_bit(position) Void
-		# Swap bit
+		# Swap bit value
 
 	API UTILS
 
-	- calculate_parity(dataset) Integer
 	- is_power(num,power) Boolean
+		# Return whether a number it's power of other.
+		
+		>> is_power(16,2) -> True
+		>> is_power(24,4) -> False
+
+	- calculate_parity(dataset) Integer
+		# Return a parity of a dataset , based a parity value received.
+
+		>> parity = "par"
+		>> calculate_parity([0,0,0,1]) -> 1
+
+	- divisors(value) List
+		# Return all divisors of the parameter that are power of two.
+		# The parameter isn't a power of two.
+
+		>> divisors(3) -> [2,1]
+		>> divisors(5) -> [4,1]
+
+
 
 '''
 
