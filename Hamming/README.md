@@ -3,10 +3,13 @@
 ## API OF FRAME
 
 > **Note :** Operation in a instance of FRAME
+
 ```python
 frame = Frame(bit_values)
 ```
-#### IS_VALID()
+
+### IS_VALID()
+
 > Check whether bits of frame has values not accepted.
 
 **Signature:** ```frame.is_valid()```
@@ -20,7 +23,8 @@ True
 False
 ```
 
-#### CHANGE_BIT(position)
+### CHANGE_BIT(position)
+
 > Change value of a bit position of a frame
 
 **Signature:** ```frame.change_bit(position)```
@@ -38,11 +42,13 @@ False
 ## API METHODS OF HAMMING ALGORITHM
 
 > **Note:** Each operations will be made in a instance of a HAMMING ALGORITHM
+
 ```python
 hamming = Hamming("parity") # pair or odd
 ```
 
-#### ENCODE(frame)
+### ENCODE(frame)
+
 > Put inside of frame the verification bit, calculating the parity value to each position.
 
 **Signature:** ```hamming.encode(frame)```
@@ -56,7 +62,9 @@ hamming = Hamming("parity") # pair or odd
 >>> print(frame_encoded)
 <Frame [100110]>
 ```
-#### CHECK(frame)
+
+### CHECK(frame)
+
 > Verify whether frame it's correct.
 
 **Signature:** ```hamming.check(frame)```
@@ -68,12 +76,14 @@ hamming = Hamming("parity") # pair or odd
 >>> hamming.check(frame)
 True
 ```
+
 ## UTILITIES IN API HAMMING
 
 > This methods are also ran on a instance of **hamming algoritm**
 
-#### IS_POWER(num,power)
->Return whether a number it's power of other.
+### IS_POWER(num,power)
+
+> Return whether a number it's power of other.
 
 **Signature:** ```hamming.is_power(number,power)```
 **Return:** ```boolean```
@@ -87,7 +97,8 @@ True
 False
 ```
 
-#### CALCULATE_PARITY(dataset)
+### CALCULATE_PARITY(dataset)
+
 > Return a parity of a dataset , returning a value that means it's a patiry of all values of dataset.
 
 **Signature:** ```hamming.calculate_parity(dataset)```
@@ -102,7 +113,8 @@ False
 0
 ```
 
-#### DIVISORS(value)
+### DIVISORS(value)
+
 >Return all divisors of parameter that are power of two. 
 >**Note:** The parameter isn't a power of two.
 
@@ -114,7 +126,8 @@ False
 [8, 2]
 ```
 
-####BITS_VERIFIED_BY(sequence, power_two)
+### BITS_VERIFIED_BY(sequence, power_two)
+
 > Return one dataset of values (0's or 1's) of the sequence passed by parameter. This sequence it's the position which don't are power of two and which the second parameter ( power_two ) verify ( turn parity bit of result dataset of bits ); the verifiers bits by them.
 
 ```python
