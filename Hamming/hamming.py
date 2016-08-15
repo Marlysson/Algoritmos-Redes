@@ -1,7 +1,10 @@
 # -*- coding:utf-8 -*-
 
 __author__ = "Marlysson Silva"
-__contacts__ =  { "email"  :"marlysson5@gmail.com" , "social_network" : "facebook.com/marlysson7" }
+__contacts__ =  { "email"  : "marlysson5@gmail.com" , 
+                  "social_network" : "facebook.com/marlysson7",
+                  "github": "github.com/Marlysson"
+                }
 
 class Frame:
 
