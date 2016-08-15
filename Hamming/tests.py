@@ -129,5 +129,18 @@ class TestHammingAlgorithm(unittest.TestCase):
 		self.assertFalse(check_frame_1)
 		self.assertFalse(check_frame_2)
 
+	def test_checks_vality_of_frame_changing_parity(self):
+		hamming = Hamming("pair")
+
+		frame = Frame("011")
+
+		frame_encoded = hamming.encode(frame)
+
+		hamming.parity = "odd"
+
+		check_frame = hamming.check(frame_encoded)
+
+		self.assertFalse(check_frame)
+
 if __name__ == "__main__":
 	unittest.main(verbosity=2)

@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
-# Author : "Marlysson Silva"
-# Contacts:  {"email":"marlysson5@gmail.com","social_network": "facebook.com/marlysson7"}
+__author__ = "Marlysson Silva"
+__contacts__ =  { "email"  :"marlysson5@gmail.com" , "social_network" : "facebook.com/marlysson7" }
 
 class Frame:
 
@@ -202,3 +202,6 @@ class Hamming:
         if bits_wrong > 0:
             return False
         return True
+
+    def __repr__(self):
+        return "<Hamming: parity = ['{}']>".format(self.parity)
