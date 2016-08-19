@@ -6,6 +6,7 @@ __contacts__ =  { "email"  : "marlysson5@gmail.com" ,
                   "github": "github.com/Marlysson"
                 }
 
+
 class Frame:
 
     def __init__(self,value):
@@ -184,7 +185,7 @@ class Hamming:
         return Frame(formated)
 			
     def check(self,frame):
-		
+        
         original_frame = list(map(int,frame.value))
 
         bits_wrong = 0
@@ -205,6 +206,40 @@ class Hamming:
         if bits_wrong > 0:
             return False
         return True
+
+    def wrong_position(self,frame):
+
+        original_frame = list(map(int,frame.value))
+
+        wrong_position = 0
+
+        for index, value_position in enumerate(original_frame):
+
+            position_readable = index + 1
+
+            if self.is_power(position_readable,2):
+
+                sequence_verified = self.bits_verified_by(original_frame,position_readable)
+                
+                parity = self.calculate_parity(sequence_verified)
+
+                if parity != original_frame[position_readable-1]:
+                    wrong_position += position_readable
+
+        return wrong_position
+
+    def fix(self,frame):
+
+        wrong_position = self.wrong_position(frame) - 1
+
+        wrong_value_frame = list(map(int,frame.value))
+
+        wrong_value_frame[wrong_position] = 1 ^ wrong_value_frame[wrong_position]
+
+        new_value = "".join(map(str,wrong_value_frame))
+
+        return Frame(new_value)
+
 
     def __repr__(self):
         return "<Hamming: parity = ['{}']>".format(self.parity)

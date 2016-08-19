@@ -142,5 +142,38 @@ class TestHammingAlgorithm(unittest.TestCase):
 
 		self.assertFalse(check_frame)
 
+	def test_must_return_position_changed_from_frame(self):
+		
+		hamming = Hamming('pair')
+
+		frame = Frame("001")
+
+		encoded = hamming.encode(frame)
+
+		changed = encoded.change_bit(6)
+
+		wrong_position = hamming.wrong_position(changed)
+
+		self.assertEqual(6,wrong_position)
+
+	def test_must_fix_a_wrong_frame(self):
+
+		hamming = Hamming('pair')
+
+		frame = Frame("001")
+
+		encoded = hamming.encode(frame)
+		print(encoded)
+
+		changed = encoded.change_bit(6)
+		print(changed)
+		self.assertFalse(hamming.check(changed))
+
+		fixed = hamming.fix(changed)
+		print(fixed)
+		check = hamming.check(fixed)
+
+		self.assertTrue(check)
+
 if __name__ == "__main__":
 	unittest.main(verbosity=2)
