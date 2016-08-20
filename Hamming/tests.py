@@ -43,6 +43,10 @@ class TestHammingAlgorithm(unittest.TestCase):
 	def setUp(self):
 		self.hamming = Hamming("pair")
 	
+	def test_valid_value_of_parity(self):
+		with self.assertRaises(ValueError):
+			hamming = Hamming("two")
+
 	def test_power_positive_numbers(self):
 		data_tests = []
 
