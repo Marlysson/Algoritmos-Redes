@@ -131,6 +131,12 @@ False
 
 > **Note:** The parameter isn't a power of two.
 
+**Signature:** ```hamming.divisors(number)```
+
+**Return:** ```A list of integers```
+
+**Usage:**
+
 ```python
 >>> hamming = Hamming("odd")
 >>> hamming.divisors(7)
@@ -143,12 +149,52 @@ False
 
 > Return one dataset of values (0's or 1's) of the sequence passed by parameter. This sequence it's the position which don't are power of two and which the second parameter ( power_two ) verify ( turn parity bit of result dataset of bits ); the verifiers bits by them.
 
+**Signature:** ```hamming.bits_verified_by(sequence, power_two)```
+
+**Return:** ```List of integers```
+
+**Usage:**
+
 ```python
 >>> hamming = Hamming("odd")
 >>> hamming.bits_verified_by(1, 0, 1, 1, 0, 0) , 1 )
 [1, 0]
 >>> hamming.bits_verified_by([1, 1, 0, 0, 1, 1] , 2 )
 [0, 1]
+```
+
+### WRONG_POSITION(frame)
+
+> Verify an return the wrong position in frame received by adding the wrong position that it parity position in frame received.
+
+**Signature:** ```hamming.wrong_position(frame)```
+
+**Return:** ```integer```
+
+**Usage:**
+
+```python
+>>> hamming = Hamming("pair")
+>>> frame = Frame("100011")
+>>> hammming.wrong_position(frame)
+2
+```
+
+### FIX(frame)
+
+> Fix a wrong frame received.
+
+**Signature:** ```hamming.fix(frame)```
+
+**Return:** ```Frame()```
+
+**Usage:**
+
+```python
+>>> hamming = Hamming("pair")
+>>> frame = Frame("100011")
+>>> hammming.fix(frame)
+<Frame [110011]>
 ```
 
 ## That's all folks. :smile: :+1:
