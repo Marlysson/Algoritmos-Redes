@@ -2,24 +2,15 @@
 
 from hamming import Frame , Hamming
 
-# Provocar erro
-# Consertar Frame
-
-options = [
-		"Enviar Frame",
-		"Receber Frame",
-]
 
 paridades = {"par":"pair","impar":"odd"}
 
-def show_menu():
-	for option , action in enumerate(options,start=1):
-		print("{} - {}".format(option,action))
 
 print("#####################################")
 print("Implementação do Algoritmo de Hamming")
 print("#####################################")
 print("")
+
 
 continuar = "s"
 
