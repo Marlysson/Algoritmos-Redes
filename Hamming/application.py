@@ -4,7 +4,11 @@ from hamming import Frame , Hamming
 
 
 paridades = {"par":"pair","impar":"odd"}
+opcoes = ["Enviar frame","Receber Frame"]
 
+def menu():
+	for index , value in enumerate(opcoes,start=1):
+		print("{} - {}".format(index,value))
 
 print("#####################################")
 print("Implementação do Algoritmo de Hamming")
@@ -16,10 +20,16 @@ continuar = "s"
 
 while continuar == "s":
 
+	menu()
+	print("")
+	escolhido = int(input("O que deseja fazer: "))
+	print("")
+
+	
 	while True:
 		try:
-			valor_paridade = str(input("Valor da paridade: par ou impar : "))
 
+			valor_paridade = str(input("Valor da paridade: par ou impar : "))
 			paridade = paridades.get(valor_paridade,None)
 			hamming = Hamming(paridade)
 			break
@@ -27,54 +37,69 @@ while continuar == "s":
 		except ValueError:
 			print("Digite um valor de paridade válido ")
 			
+	if escolhido == 1:
 
-	conteudo = str(input("Digite o conteúdo do frame: "))
-
-	frame = Frame(conteudo)
-
-	while not frame.is_valid():
 		conteudo = str(input("Digite o conteúdo do frame: "))
+
 		frame = Frame(conteudo)
-		
-	mudar_frame = str(input("Deseja provocar um erro? s / n : "))
 
-	frame_encoded = hamming.encode(frame)
+		while not frame.is_valid():
+			conteudo = str(input("Digite o conteúdo do frame: "))
+			frame = Frame(conteudo)
+			
+		mudar_frame = str(input("Deseja provocar um erro? s / n : "))
 
-	if mudar_frame == "s":
+		frame_encoded = hamming.encode(frame)
 
-		while True:
-			try:
+		if mudar_frame == "s":
 
-				posicao = int(input("Digite o número da posição: "))
-				frame_encoded = frame_encoded.change_bit(posicao)
-				break
+			while True:
+				try:
 
-			except ValueError:
+					posicao = int(input("Digite o número da posição: "))
+					frame_encoded = frame_encoded.change_bit(posicao)
 
-				print("Digite uma posição válida: ")									
-		
-	print("O conteúdo do frame enviado é : {}".format(frame_encoded))
+					print("O conteúdo do frame enviado é : {}".format(frame_encoded))
+					break
 
-	verificar_validade = str(input("Deseja verificar se o frame está correto ? s / n: "))
+				except ValueError:
 
-	validade = hamming.check(frame_encoded)
+					print("Digite uma posição válida: ")									
+		else:
 
-	if validade:
+			print("O conteúdo do frame enviado é : {}".format(frame_encoded))
 
-		print("O frame {} está correto.".format(frame_encoded))
+	elif escolhido == 2:
 
-	else:
+		conteudo = str(input("Digite o conteúdo do frame: "))
 
-		posicao_errada = hamming.wrong_position(frame_encoded)
+		frame = Frame(conteudo)
 
-		print("O frame {} , está incorreto , e o bit errado é o : {}".format(frame_encoded,posicao_errada))
+		while not frame.is_valid():
+			conteudo = str(input("Digite o conteúdo do frame: "))
+			frame = Frame(conteudo)
+			
 
-		consertar = str(input("Deseja consertar o frame? s / n : "))
+		verificar_validade = str(input("Deseja verificar se o frame está correto ? s / n: "))
 
-		if consertar == "s":
+		validade = hamming.check(frame)
 
-			fix_frame = hamming.fix(frame_encoded)
+		if validade:
 
-			print("O frame errado {} , foi consertado : {}".format(frame_encoded,fix_frame))
+			print("O frame {} está correto.".format(frame))
+
+		else:
+
+			posicao_errada = hamming.wrong_position(frame)
+
+			print("O frame {} , está incorreto , e o bit errado é o : {}".format(frame,posicao_errada))
+
+			consertar = str(input("Deseja consertar o frame? s / n : "))
+
+			if consertar == "s":
+
+				fix_frame = hamming.fix(frame)
+
+				print("O frame errado {} , foi consertado : {}".format(frame,fix_frame))
 
 	continuar = str(input("Deseja continuar ? s / n : "))
