@@ -157,7 +157,7 @@ False
 
 ```python
 >>> hamming = Hamming("odd")
->>> hamming.bits_verified_by(1, 0, 1, 1, 0, 0) , 1 )
+>>> hamming.bits_verified_by([1, 0, 1, 1, 0, 0] , 1 )
 [1, 0]
 >>> hamming.bits_verified_by([1, 1, 0, 0, 1, 1] , 2 )
 [0, 1]
